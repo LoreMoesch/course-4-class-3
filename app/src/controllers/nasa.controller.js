@@ -6,21 +6,24 @@ async function getIndex(req, res){
     res.json({message: 'This is the Nasa root route'});
 }
 
-async function getPictureOfTheDay(req, res){
+function getPictureOfTheDay(req, res){
+    let response;
     const query = {
         date: req.query.date,
         start_date: req.query.start_date,
         end_date: req.query.end_date
     };
     const axiosParams = querystring.stringify({api_key: apiKey, ...query})
-    console.log(axiosParams);
     axios.get(`https://api.nasa.gov/planetary/apod?${axiosParams}`)
-        .then((response) => {
-            res.json(response.data);
+        .then((result) => {
+            response = result.data;
+            apodMongoService.saveApodCache(response);
         })
         .catch(err => {
-            res.status(500).json(err);
+            res.status(err.response.status);
+            response = err.response.data;
         });
+    res.json(response)
 }
 
 async function getMarsPicture(req, res){
@@ -38,7 +41,7 @@ async function getMarsPicture(req, res){
 }
 
 async function savePictureOfTheDay(req, res){
-    const response = await apodMongoService.saveApod();
+    const response = await apodMongoService.saveApodCache();
     res.json(response);
 }
 

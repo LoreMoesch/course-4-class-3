@@ -1,7 +1,9 @@
 const apod = require('../../../config/Schema/apod.schema');
 
-async function saveApod(){
-    const apodToday = new apod({title: 'my apod'});
+async function saveApodCache(data){
+    console.log(data, 'here');
+    const apodToday = new apod(data);
+    console.log(apodToday);
     try{
         await apodToday.save((err, apodToday) => {
             console.log('new element added to the DB', apodToday);
@@ -10,7 +12,7 @@ async function saveApod(){
         throw err;
     }
 
-    return {status: 'ok'};
+    return {};
 };
 
-module.exports = {saveApod};
+module.exports = {saveApodCache};
