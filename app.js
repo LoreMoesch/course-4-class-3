@@ -3,9 +3,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv').config();
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const nasaRouter = require('./routes/nasa');
+const indexRouter = require('./app/src/routes/index');
+const usersRouter = require('./app/src/routes/users');
+const nasaRouter = require('./app/src/routes/nasa');
 const mongoose = require('mongoose');
 const app = express();
 

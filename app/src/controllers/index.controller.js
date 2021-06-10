@@ -1,4 +1,4 @@
-const playersData = require('../stubs/data.json');
+const playersData = require('../../../stubs/data.json');
 function getIndex(req, res){
     res.json({
         message: 'This is the root rout',

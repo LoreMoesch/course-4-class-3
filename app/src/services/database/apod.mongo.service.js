@@ -1,4 +1,4 @@
-const apod = require('../../config/Schema/apod.schema');
+const apod = require('../../../config/Schema/apod.schema');
 
 async function saveApod(){
     const apodToday = new apod({title: 'my apod'});
