@@ -7,6 +7,8 @@ async function getIndex(req, res){
 }
 
 async function getPictureOfTheDay(req, res){
+    let result; 
+
     const query = {
         date: req.query.date,
         start_date: req.query.start_date,
@@ -14,13 +16,16 @@ async function getPictureOfTheDay(req, res){
     };
     const axiosParams = querystring.stringify({api_key: apiKey, ...query})
     console.log(axiosParams);
-    axios.get(`https://api.nasa.gov/planetary/apod?${axiosParams}`)
-        .then((response) => {
-            res.json(response.data);
+    await axios.get(`https://api.nasa.gov/planetary/apod?${axiosParams}`)
+        .then(async (response) => {
+            await apodMongoService.saveApod(response.data);
+            result = response.data;
         })
         .catch(err => {
-            res.status(500).json(err);
+            response = {status: 'error', detailed_message: 'error while calling NASA API', ...err.response.data};
+            res.status(err.response.status);
         });
+    res.json(result);
 }
 
 async function getMarsPicture(req, res){

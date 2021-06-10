@@ -3,15 +3,16 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv').config();
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const nasaRouter = require('./routes/nasa');
+const indexRouter = require('./app/src/routes/index');
+const usersRouter = require('./app/src/routes/users');
+const nasaRouter = require('./app/src/routes/nasa');
 const mongoose = require('mongoose');
+const mongoConfig = require('./app/config/mongo.config');
 const app = express();
 
 // view engine setup
 // {"hola": "mundo"} {hola: 'mundo'}
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.qtcrz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(mongoConfig.dbUri, mongoConfig.mongooseOptions)
   .then(() => console.log('mongodb connected!'))
   .catch(err => console.log(err));
 app.use(logger('dev'));
